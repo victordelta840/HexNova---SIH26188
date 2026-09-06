@@ -34,3 +34,18 @@ def test_screening_returns_explainable_demonstration_result() -> None:
     assert len(payload["audit_record_hash"]) == 64
     assert payload["case_id"].startswith("CASE-")
     assert payload["metadata"]["status"] == "analyzed"
+    assert payload["document_quality"]["status"] in {"PASS", "LOW_RISK", "MEDIUM_RISK", "REVIEW_REQUIRED"}
+    assert payload["structure_analysis"]["status"] in {"PASS", "LOW_RISK", "MEDIUM_RISK", "REVIEW_REQUIRED"}
+
+
+def test_document_preprocessing_uses_image_dimensions_and_quality_checks() -> None:
+    from app.services.analysis.preprocessing import preprocess_document
+
+    quality = preprocess_document(valid_jpeg().getvalue(), "image/jpeg")
+
+    assert quality["format"] == "JPEG"
+    assert quality["width"] > 0
+    assert quality["height"] > 0
+    assert quality["aspect_ratio"] > 0
+    assert quality["quality_score"] >= 0
+    assert "orientation" in quality

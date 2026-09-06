@@ -56,6 +56,18 @@ class RiskResult(BaseModel):
     level: Literal["low", "medium", "high"]
     score: int = Field(ge=0, le=100)
     reasons: list[str]
+    recommended_action: str = "MANUAL_REVIEW_RECOMMENDED"
+    confidence: float | None = None
+
+
+class LayerResult(BaseModel):
+    name: str
+    status: Literal["PASS", "LOW_RISK", "MEDIUM_RISK", "HIGH_RISK", "REVIEW_REQUIRED"]
+    score: int = Field(ge=0, le=100)
+    risk_contribution: int = Field(ge=0, le=100)
+    findings: list[str]
+    confidence: float | None = None
+    layer: str
 
 
 class ScreeningResponse(BaseModel):
@@ -76,4 +88,13 @@ class ScreeningResponse(BaseModel):
     risk: RiskResult
     audit_record_hash: str
     integration_status: Literal["demonstration-mode"]
+    document_quality: LayerResult | None = None
+    structure_analysis: LayerResult | None = None
+    ocr_analysis: LayerResult | None = None
+    alignment_analysis: LayerResult | None = None
+    typography_analysis: LayerResult | None = None
+    photo_region_analysis: LayerResult | None = None
+    visual_pattern_analysis: LayerResult | None = None
+    reference_profile_analysis: LayerResult | None = None
+    deep_learning_analysis: LayerResult | None = None
 

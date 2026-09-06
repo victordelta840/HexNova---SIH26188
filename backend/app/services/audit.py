@@ -38,6 +38,7 @@ class AuditRepository:
 
     def __init__(self) -> None:
         self._cases: dict[str, CaseRecord] = {}
+        self._reference_events: dict[str, list[AuditEventRecord]] = {}
 
     def start_case(self, case_id: str, document_type: str, actor_id: str | None = None, actor_role: str | None = None, is_demo: bool = False) -> CaseRecord:
         case = CaseRecord(case_id, document_type, None, utc_now(), is_demo=is_demo)
@@ -65,6 +66,13 @@ class AuditRepository:
         case = self._cases[case_id]
         case.screening_status = "SCREENING_FAILED"
         self.record_event(case_id, "SCREENING_FAILED", module_name, "FAILED", details)
+
+    def record_reference_event(self, profile_id: str, event_type: str, details: str, actor_id: str | None = None, actor_role: str | None = None) -> None:
+        event = AuditEventRecord(event_type, "reference_profile", "COMPLETED", utc_now(), details, actor_id, actor_role)
+        self._reference_events.setdefault(profile_id, []).append(event)
+
+    def get_reference_events(self, profile_id: str) -> list[AuditEventRecord]:
+        return list(self._reference_events.get(profile_id, []))
 
     def get_case(self, case_id: str) -> CaseRecord | None:
         return self._cases.get(case_id)

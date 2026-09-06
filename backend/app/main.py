@@ -13,6 +13,7 @@ from app.api.v1.cases import router as cases_router
 from app.api.v1.auth import router as auth_router
 from app.api.v1.reports import router as reports_router
 from app.api.v1.demo import router as demo_router
+from app.api.v1.reference_profiles import router as reference_profiles_router
 
 
 class HealthResponse(BaseModel):
@@ -38,6 +39,7 @@ app.include_router(cases_router, prefix=settings.api_v1_prefix)
 app.include_router(auth_router, prefix=settings.api_v1_prefix)
 app.include_router(reports_router, prefix=settings.api_v1_prefix)
 app.include_router(demo_router, prefix=settings.api_v1_prefix)
+app.include_router(reference_profiles_router, prefix=settings.api_v1_prefix)
 
 
 @app.exception_handler(Exception)

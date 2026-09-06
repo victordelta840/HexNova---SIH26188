@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 30
     demo_officer_password: str | None = None
     demo_admin_password: str | None = None
+    admin_secret_code: str = ""
 
     model_config = SettingsConfigDict(
         env_file=".env",

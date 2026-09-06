@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: screening
+      POSTGRES_USER: screening
+      POSTGRES_PASSWORD: change-me-local-only
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U screening -d screening"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    environment:
+      SCREENING_DATABASE_URL: postgresql+psycopg://screening:change-me-local-only@postgres:5432/screening
+      SCREENING_CORS_ORIGINS: http://localhost:3000
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000/api/v1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend

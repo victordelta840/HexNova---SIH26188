@@ -33,7 +33,8 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://frontend-cf50fe9e3-victordelta840-projects.vercel.app",
+        "http://localhost:3000",
+        "https://frontend-gt50fe9t3-victordelta840-projects.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],

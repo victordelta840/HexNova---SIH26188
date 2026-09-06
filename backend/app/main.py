@@ -34,7 +34,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://frontend-gt50fe9t3-victordelta840-projects.vercel.app",
+        "https://frontend-rjg837v3-victordelta840s-projects.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],

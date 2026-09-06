@@ -23,6 +23,11 @@ class HealthResponse(BaseModel):
 
 settings = get_settings()
 
+app = FastAPI(
+    title=settings.app_name,
+    version="0.1.0"
+)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[

@@ -35,7 +35,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
     ],
-    allow_origin_regex=r"https://frontend-.*-victordelta840s-projects\.vercel\.app",
+    allow_origin_regex=r"https://frontend-.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

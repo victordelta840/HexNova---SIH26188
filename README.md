@@ -70,9 +70,30 @@ Authentication uses short-lived JWT bearer tokens and Argon2 password hashes. Se
 $env:SCREENING_JWT_SECRET_KEY = "generate-a-long-random-secret"
 $env:SCREENING_DEMO_OFFICER_PASSWORD = "use-a-local-demo-password"
 $env:SCREENING_DEMO_ADMIN_PASSWORD = "use-a-different-local-demo-password"
+$env:SCREENING_REFERENCE_PROFILE_LOCK_SECRET = "set-a-second-admin-protection-secret"
 ```
 
 The environment-created accounts `demo.officer` and `demo.admin` are demonstration accounts only. The login endpoint is `POST /api/v1/auth/login`; protected screening, face, integrity, document, and case endpoints require its bearer token. Logout is client-side session clearing, and no government authentication is claimed.
+
+### Reference profile security
+
+The project now includes a protected administrative reference profile workflow. Only `ADMIN` users can create or mutate locked reference profiles. Replacing or deleting a locked profile requires the backend-secret check from `SCREENING_REFERENCE_PROFILE_LOCK_SECRET`, and this value is never exposed in the frontend or committed to source control.
+
+Example admin flow:
+
+```powershell
+POST /api/v1/reference-profiles
+{
+  "document_type": "passport",
+  "profile_name": "passport-demo-profile",
+  "document_hash": "sha256:...",
+  "profile_summary": {"aspect_ratio": 1.4, "layout_consistency": 95},
+  "characteristics": {"major_regions": 6},
+  "authorization_code": "set-a-second-admin-protection-secret"
+}
+```
+
+The API returns the profile with `status: "LOCKED"` and `is_locked: true`. Replacement or unlock operations require the same secret and admin authorization.
 
 ### Case management
 

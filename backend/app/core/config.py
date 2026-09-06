@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 30
     demo_officer_password: str | None = None
     demo_admin_password: str | None = None
+
     reference_profile_lock_secret: str | None = None
     deep_learning_enabled: bool = True
     deep_model_name: str = "efficientnet_b0"
@@ -26,6 +27,9 @@ class Settings(BaseSettings):
     deep_anomaly_threshold: float = 0.60
     autoencoder_enabled: bool = False
     demo_mode: bool = True
+
+    admin_secret_code: str = ""
+
 
     model_config = SettingsConfigDict(
         env_file=".env",

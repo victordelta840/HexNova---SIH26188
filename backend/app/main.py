@@ -14,6 +14,8 @@ from app.api.v1.auth import router as auth_router
 from app.api.v1.reports import router as reports_router
 from app.api.v1.demo import router as demo_router
 from app.api.v1.reference_profiles import router as reference_profiles_router
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 class HealthResponse(BaseModel):
@@ -31,10 +33,9 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "https://frontend-cf50fe9e3-victordelta840s-projects.vercel.app",
+        "https://frontend-cf50fe9e3-victordelta840-projects.vercel.app",
     ],
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
